@@ -1,14 +1,11 @@
 const express = require("express");
-const User = require("./models/User");
+const cors = require("cors");
 const mongoose = require("mongoose");
-const auth = require("./routes/auth");
-var bodyParser = require("body-parser");
-const {userValidator}=require("./validators/validator")
+const auth = require("./routes/auth/auth");
+const verifyToken=require("./routes/auth/verifyToken")
+const bodyParser = require("body-parser");
 require("dotenv").config();
 const app = express();
-
-
-
 
 //
 (async () => {
@@ -46,6 +43,7 @@ const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cors());
 app.use("/", auth);
 app.listen(process.env.PORT, () =>
   console.log("Server running on port", process.env.PORT)
