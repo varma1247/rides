@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const auth = require("./routes/auth/auth");
-const verifyToken=require("./routes/auth/verifyToken")
+const verifyToken = require("./routes/auth/verifyToken");
 const bodyParser = require("body-parser");
 require("dotenv").config();
 const app = express();

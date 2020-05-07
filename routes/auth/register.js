@@ -5,20 +5,20 @@ const { registrationValidator } = require("../../validators/validator");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 module.exports = async (req, res) => {
-  const now = new Date();
+  console.log(req.body);
   const { error } = registrationValidator.validate(req.body);
   if (error) {
-    return res.status(400).send(error.details[0].message);
+    return res.status(400).json(error.details[0].message);
   }
   const existinguseremail = await User.findOne({ email: req.body.email });
   if (existinguseremail) {
-    return res.status(400).send("email already exists");
+    return res.status(400).json("email already exists");
   }
   const existinguserusername = await User.findOne({
     username: req.body.username,
   });
   if (existinguserusername) {
-    return res.status(400).send("username already exists");
+    return res.status(400).json("username already exists");
   }
   const salt = await bcrypt.genSalt(10);
   const hashedpass = await bcrypt.hash(req.body.password, salt);
@@ -26,8 +26,8 @@ module.exports = async (req, res) => {
   const user = new User(req.body);
   try {
     const saveduser = await user.save();
-    res.send({ user: saveduser._id });
+    res.json({ user: saveduser._id });
   } catch (error) {
-    res.status(400).send(error);
+    res.status(400).json(error);
   }
 };
