@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const auth = require("./routes/auth/auth");
-const verifyToken = require("./routes/auth/verifyToken");
+const main = require("./routes/main/main");
 const bodyParser = require("body-parser");
 require("dotenv").config();
 const app = express();
@@ -45,6 +45,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 app.use("/", auth);
+app.use("/", main);
 app.listen(process.env.PORT, () =>
   console.log("Server running on port", process.env.PORT)
 );

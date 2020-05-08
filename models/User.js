@@ -26,9 +26,13 @@ const userSchema = new Schema({
   profilepic: {
     type: String,
   },
-  created: {
+  createdat: {
     type: Date,
     default: Date.now,
   },
+  isVerified:{
+    type:Boolean,
+    default:false
+  }
 });
 module.exports = mongoose.model("User", userSchema);
