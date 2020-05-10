@@ -11,7 +11,7 @@ module.exports = async (req, res) => {
   try {
     const user = await User.findOne({ username: req.body.username });
   if (!user) {
-    return res.status(400).json("Username doesn't exist");
+    return res.status(400).json("User doesn't exist");
   }
   console.log("hello");
   const validpass = await bcrypt.compare(req.body.password, user.password);
