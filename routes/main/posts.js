@@ -1,5 +1,7 @@
 const Post = require("../../models/Post");
+const User = require("../../models/User");
 const { postValidator } = require("../../validators/postValidator");
+const axios = require("axios");
 module.exports = {
   getPosts: async (req, res) => {
     try {
@@ -12,7 +14,7 @@ module.exports = {
       if (!allPosts) {
         return res.status(400).json("No Posts");
       }
-      console.log(allPosts);
+      // console.log(allPosts);
 
       res.json({ allPosts: allPosts });
     } catch (error) {
@@ -27,7 +29,14 @@ module.exports = {
     const post = new Post(req.body);
     try {
       const savedPost = await post.save();
-      res.json({ post: savedPost });
+      const finalPost = await savedPost.populate("user").execPopulate();
+      // console.log(finalPost);
+      let expotokens = await User.find({}, "expotoken");
+      expotokens = expotokens.map((e) => {
+        return e.expotoken;
+      });
+      console.log(expotokens);
+      res.json({ post: finalPost });
     } catch (error) {
       res.status(400).json(error);
     }

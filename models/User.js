@@ -30,9 +30,12 @@ const userSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-  isVerified:{
+  isverified:{
     type:Boolean,
     default:false
+  },
+  expotoken:{
+    type:String,
   }
 });
 module.exports = mongoose.model("User", userSchema);
