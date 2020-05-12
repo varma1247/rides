@@ -31,13 +31,50 @@ module.exports = {
       const savedPost = await post.save();
       const finalPost = await savedPost.populate("user").execPopulate();
       // console.log(finalPost);
-      let expotokens = await User.find({}, "expotoken");
-      expotokens = expotokens.map((e) => {
-        return e.expotoken;
+      let expotokensArray = await User.find(
+        { _id: { $ne: finalPost.user._id } },
+        "expotokens"
+      );
+      expotokensArray = expotokensArray.map((tokens) => {
+        return tokens.expotokens;
       });
-      console.log(expotokens);
+      expotokensArray = expotokensArray.flat();
+      const messageBody =
+        finalPost.user.firstname +
+        " " +
+        finalPost.user.lastname +
+        " posted a new ride!!!";
+      if (expotokensArray.length!=0) {
+        const notificationMessage = JSON.stringify({
+          to: expotokensArray,
+          title: "New Notification",
+          body: messageBody,
+          sound: "default",
+          channelId: "default",
+        });
+        const notificationResponse = await axios.post(
+          "https://exp.host/--/api/v2/push/send",
+          notificationMessage,
+          {
+            headers: {
+              Accept: "application/json",
+              "Accept-encoding": "gzip, deflate",
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log(
+          notificationResponse.data.data.map((n) => {
+            return n.status;
+          })
+        );
+      }
+
+      console.log(expotokensArray);
       res.json({ post: finalPost });
     } catch (error) {
+      console.log(error.response);
+
       res.status(400).json(error);
     }
   },

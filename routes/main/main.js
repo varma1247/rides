@@ -4,5 +4,5 @@ const { saveExpoToken } = require("./pushNotification");
 const verifyToken = require("../auth/verifyToken");
 router.get("/post", verifyToken, getPosts);
 router.post("/post", verifyToken, createPost);
-router.post('/saveexpotoken',verifyToken,saveExpoToken)
+router.post("/saveexpotoken", verifyToken, saveExpoToken);
 module.exports = router;
