@@ -12,6 +12,8 @@ const auth = (req, res, next) => {
     const verifiedToken = jwt.verify(token, process.env.TOKEN_SECRET);
     req.body.user = verifiedToken._id;
     console.log(verifiedToken);
+    console.log("hughyfggfvgfvgvgvcgvgvvhgv");
+    
     next();
   } catch (err) {
     res.status(401).send("Access Denied");

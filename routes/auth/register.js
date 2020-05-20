@@ -5,7 +5,7 @@ const { registrationValidator } = require("../../validators/validator");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 module.exports = async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   const { error } = registrationValidator.validate(req.body);
   if (error) {
     return res.status(400).json(error.details[0].message);

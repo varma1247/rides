@@ -15,14 +15,10 @@ const postSchema = new Schema({
     ref: "User",
     required: true,
   },
-  likes: {
-    type: Number,
-    default: 0,
-  },
-  comments: [
+  interested: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Comment",
+      ref: "User",
     },
   ],
 });

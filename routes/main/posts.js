@@ -7,15 +7,38 @@ module.exports = {
     try {
       console.log("hello");
       const allPosts = await Post.find({})
-        .populate("user", ["username", "firstname", "lastname"])
+        .lean()
+        .populate("user", ["username", "firstname", "lastname", "interested"])
         .sort({ createdat: -1 });
       // const {firstname,lastname,username}=allPosts.user
       // allPosts.user={firstname,lastname,username}
+
       if (!allPosts) {
         return res.status(400).json("No Posts");
       }
-      // console.log(allPosts);
-
+      // allPosts=allPosts.map((post)=>{
+      //   if(req.body.user === post.user){
+      //     return {...post,self:true}
+      //   }
+      //   return {...post}
+      // })
+      // let newAllPosts = [];
+      
+      allPosts.forEach((post) => {
+        if (post.user._id.toString() === req.body.user.toString()) {
+          post.self = true;
+        }
+        let interestedPeopleIds=post.interested.map((i)=>i.toString())
+        if (interestedPeopleIds.includes(req.body.user.toString())) {
+          console.log("hbhzcvhvch");
+          post.liked = true;
+        }
+        // console.log(post);
+        
+        post.interested = post.interested.length;
+        // newAllPosts.push(post);
+      });
+      console.log(allPosts);
       res.json({ allPosts: allPosts });
     } catch (error) {
       res.status(400).json(error);
@@ -35,6 +58,7 @@ module.exports = {
         { _id: { $ne: finalPost.user._id } },
         "expotokens"
       );
+      if (expotokensArray.length != 0) {
       expotokensArray = expotokensArray.map((tokens) => {
         return tokens.expotokens;
       });
@@ -44,10 +68,10 @@ module.exports = {
         " " +
         finalPost.user.lastname +
         " posted a new ride!!!";
-      if (expotokensArray.length!=0) {
+     
         const notificationMessage = JSON.stringify({
           to: expotokensArray,
-          title: "New Notification",
+          title: "UTA RIDES",
           body: messageBody,
           sound: "default",
           channelId: "default",
