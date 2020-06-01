@@ -1,5 +1,7 @@
 const jwt = require("jsonwebtoken");
 const auth = (req, res, next) => {
+  console.log(req.path);
+  
   const authHeader = req.headers["authorization"];
   if (!authHeader) {
     return res.status(401).send("Access Denied");
@@ -13,9 +15,11 @@ const auth = (req, res, next) => {
     req.body.user = verifiedToken._id;
     console.log(verifiedToken);
     console.log("hughyfggfvgfvgvgvcgvgvvhgv");
-    
+
     next();
   } catch (err) {
+    console.log(err);
+    
     res.status(401).send("Access Denied");
   }
 };

@@ -27,6 +27,7 @@ module.exports = {
           sound: "default",
           channelId: "default",
         });
+        res.json(doc);
         const notificationResponse = await axios.post(
           "https://exp.host/--/api/v2/push/send",
           notificationMessage,
@@ -44,7 +45,6 @@ module.exports = {
           })
         );
       }
-      res.json(doc);
     } catch (error) {
       res.status(400).json(error);
     }

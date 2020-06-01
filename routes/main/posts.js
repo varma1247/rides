@@ -23,18 +23,18 @@ module.exports = {
       //   return {...post}
       // })
       // let newAllPosts = [];
-      
+
       allPosts.forEach((post) => {
         if (post.user._id.toString() === req.body.user.toString()) {
           post.self = true;
         }
-        let interestedPeopleIds=post.interested.map((i)=>i.toString())
+        let interestedPeopleIds = post.interested.map((i) => i.toString());
         if (interestedPeopleIds.includes(req.body.user.toString())) {
           console.log("hbhzcvhvch");
           post.liked = true;
         }
         // console.log(post);
-        
+
         post.interested = post.interested.length;
         // newAllPosts.push(post);
       });
@@ -59,16 +59,17 @@ module.exports = {
         "expotokens"
       );
       if (expotokensArray.length != 0) {
-      expotokensArray = expotokensArray.map((tokens) => {
-        return tokens.expotokens;
-      });
-      expotokensArray = expotokensArray.flat();
-      const messageBody =
-        finalPost.user.firstname +
-        " " +
-        finalPost.user.lastname +
-        " posted a new ride!!!";
-     
+        expotokensArray = expotokensArray.map((tokens) => {
+          return tokens.expotokens;
+        });
+        expotokensArray = expotokensArray.flat();
+        expotokensArray = [...new Set(expotokensArray)];
+        const messageBody =
+          finalPost.user.firstname +
+          " " +
+          finalPost.user.lastname +
+          " posted a new ride!!!";
+
         const notificationMessage = JSON.stringify({
           to: expotokensArray,
           title: "UTA RIDES",
